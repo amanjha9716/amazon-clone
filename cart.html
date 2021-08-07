@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon 2.0</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/jdenticon@3.1.0/dist/jdenticon.min.js" async
+        integrity="sha384-VngWWnG9GS4jDgsGEUNaoRQtfBGiIKZTiXwm9KpgAeaRn6Y/1tAFiyXqSzqC8Ga/"
+        crossorigin="anonymous">
+</script>
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="./firebase.js"></script>
+    <script src="./cart.js"></script>
+</head>
+<body>
+    <div class="bg-white w-full h-full ">
+        <div class="header bg-gray-900 flex justify-around items-center ">
+            <div class="logo w-1/5 h-16 ">
+            <a href="\index.html">
+              <img class="w-1/2  h-16 pt-4 ml-5 py-1.5 object-contain cursor-pointer" src="https://www.pinclipart.com/picdir/big/57-576184_view-our-amazon-storefront-amazon-logo-white-png.png" alt="">
+            </a>
+            </div>
+                <div class="flex m-auto w-1/3">
+                    <input type="text" placeholder="search..." class="placeholder-white rounded-l-lg px-3 h-9 w-1/1 text-white focus:outline-none bg-gray-800 border  border-opacity-75 border-gray-500 items-center">
+                    <div class="catagory h-9 w-1/8 px-10 items-center bg-gray-800 flex text-white border border-gray-500 border-opacity-75">
+                        categories
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 pl-2 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                         </svg>
+                    </div>
+                    <div class="h-9 w-10 text-sm bg-yellow-500 rounded-r-xl flex justify-center items-center text-white border border-gray-500 border-opacity-75 items-center ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <!-- right side icons -->
+                <div class="right ml-auto mr-8 w-1/6 text-white  flex items-center justify-around ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 p-1 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                      <div class="cart  h-9 w-9 bg-yellow-500 text-gray-500 flex justify-center items-center rounded-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 p-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                          </svg>
+                      </div>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 p-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                      </svg>
+                      <svg class="h-12 w-12 rounded-xl " data-jdenticon-value="user127"></svg>
+                </div>
+        </div>
+        <div class="main h-screen flex">
+            <div class="sidebar  border-t-2 border-gray-500 border-opacity-75 w-1/6  bg-gray-900">
+                <div class="main-category mx-4">
+                    <div class="categories bg-gray-700 p-1 rounded-lg border border-gray-500 border-opacity-75 flex ml-5 my-4  text-yellow-500   cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                          </svg>
+                          <span>Categories</span>
+                    </div>
+                
+                <div class="allcateg text-white cursor-pointer pl-12 flex font-bold py-1.5 hover:bg-gray-700 rounded-lg">
+                    
+                    <span>Echo And Alexa</span>
+                  
+                </div>
+                <div class="allcateg text-white cursor-pointer pl-12 flex font-bold py-1.5 hover:bg-gray-700 items-center rounded-lg">
+                    
+                    <span>Kindel</span>
+                  
+                </div>
+                <div class="allcateg text-white cursor-pointer pl-12 flex font-bold py-1.5 hover:bg-gray-700 items-center rounded-lg">
+                    
+                    <span>Books</span>
+                  
+                </div>
+                <div class="allcateg text-white cursor-pointer pl-12 flex font-bold py-1.5 hover:bg-gray-700 items-center rounded-lg">
+                    
+                    <span>Home And Garden</span>
+                  
+                </div>
+                <div class="allcateg text-white cursor-pointer pl-12 flex font-bold py-1.5 hover:bg-gray-700 items-center rounded-lg">
+                    
+                    <span>Fashion</span>
+                  
+                </div>
+
+                <div class="sidebar-below pl-8 cursor-pointer mt-6 py-1.5 font-bold text-white hover:bg-gray-700 items-center rounded-lg">
+                    %  Sell on Amazon
+                </div>
+                
+                <div class="sidebar-below pl-8 cursor-pointer  py-1.5 font-bold text-white flex hover:bg-gray-700 items-center rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                        Help
+                </div>
+            </div>            
+            </div>
+            <div class="maincontent flex-1 m-4">
+                <h1 class="font-bold mb-3 text-2xl text-gray-400 "> Shopping Cart</h1>
+                <div class="flex text-gray-400 font-bold w-full">
+                     <h2 class="flex-grow">Products</h2>
+                     <h2 class="w-48">Count</h2>
+                     <h2 class="w-48">Total Cost</h2>
+                     <span class="w-10"></span>
+                </div> 
+                <div class="cart-items  mt-5">
+                    <!-- cart item display from db -->
+                </div>    
+                <div class="totalamount flex justify-end mt-5">
+                    <div class="cost ">
+                        <div class="text-gray-400 text-sm">
+                            Total Cost
+                        </div>
+                        <div class="total-price text-xl font-bold text-gray-500">
+                            <span></span> &#8377;
+                        </div>
+                    </div>
+                    
+                    <div class="paybutton cursor-pointer mr-5 rounded-md bg-yellow-500 w-36 h-12 ml-5 flex items-center justify-center hover:bg-yellow-600 text-white">
+                        Complete Order
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+
+        </div>
+    </div>
+    
+</body>
+</html>
